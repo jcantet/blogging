@@ -5,7 +5,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 50  # Order that this section will appear.
 
-title = "Accomplish&shy;ments"
+title = "Certifications"
 subtitle = ""
 
 # Date format
@@ -19,33 +19,23 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[item]]
-  organization = "Coursera"
-  organization_url = "https://www.coursera.org"
-  title = "Neural Networks and Deep Learning"
-  url = ""
-  certificate_url = "https://www.coursera.org"
-  date_start = "2018-10-01"
+  organization = "ETS Global"
+  organization_url = "https://www.etsglobal.org/fr/fr"
+  title = "TOEIC"
+  url = "https://www.etsglobal.org/fr/fr"
+  certificate_url = "https://www.etsglobal.org/fr/fr"
+  date_start = "2018-05-01"
   date_end = ""
-  description = ""
-
-[[item]]
-  organization = "edX"
-  organization_url = "https://www.edx.org"
-  title = "Blockchain Fundamentals"
-  url = "https://www.edx.org/professional-certificate/uc-berkeleyx-blockchain-fundamentals"
-  certificate_url = "https://www.edx.org"
-  date_start = "2018-03-01"
-  date_end = ""
-  description = "Formulated informed blockchain models, hypotheses, and use cases."
+  description = "TOEIC - 965 points (995 points max)."
   
 [[item]]
   organization = "DataCamp"
   organization_url = "https://www.datacamp.com"
-  title = "Object-Oriented Programming in R: S3 and R6 Course"
-  url = ""
-  certificate_url = "https://www.datacamp.com"
-  date_start = "2017-07-01"
-  date_end = "2017-12-21"
-  description = ""
+  title = "Data Scientist with R"
+  url = "https://www.datacamp.com/tracks/data-scientist-with-r"
+  certificate_url = "https://www.datacamp.com/statement-of-accomplishment/track/8706907d5e60771850ed5fc2eaa1f76ce3c1eca8"
+  date_start = "2018-10-15"
+  date_end = ""
+  description = " Formation en ligne sur les techniques de statistiques et de machine learning couramment utilisées, sous R."
 
 +++

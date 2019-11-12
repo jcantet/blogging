@@ -5,7 +5,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 40  # Order that this section will appear.
 
-title = "Experience"
+title = "Expériences"
 subtitle = ""
 
 # Date format for experience
@@ -18,27 +18,37 @@ date_format = "Jan 2006"
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 [[experience]]
-  title = "CEO"
-  company = "GenCoin"
+  title = "Chargés d'études actuarielles"
+  company = "Macif Mutualité"
   company_url = ""
-  location = "California"
-  date_start = "2017-01-01"
+  location = "Niort"
+  date_start = "2018-10-01"
   date_end = ""
-  description = """
-  Responsibilities include:
+  description = """Actuariat en assurance santé collective
+  Activités du poste:
   
-  * Analysing
-  * Modelling
-  * Deploying
+  * Renouvellement tarifaire
+  * Suivi et pilotage de portefeuille
+  * Tarification de contrats sur-mesure
+  * Calcul d'impacts d'évolutions réglementaires (100% Santé)
+  * Automatisation des process
+  * Études statistiques diverses
   """
 
 [[experience]]
-  title = "Professor"
-  company = "University X"
+  title = "Chargé d'études statistiques"
+  company = "Maaf - Covéa"
   company_url = ""
-  location = "California"
-  date_start = "2016-01-01"
-  date_end = "2016-12-31"
-  description = """Taught electronic engineering and researched semiconductor physics."""
-
+  location = "Niort"
+  date_start = "2017-05-15"
+  date_end = "2018-10-01"
+  description = """Études statistiques en assurance santé individuelle.
+  Activités du poste:
+  
+  * Analyse du profil des assurés
+  * Suivi de la consommation
+  * Projection des évolutions réglementaires (100% Santé)
+  * Benchmark tarifaire
+  * Exploitation open-data
+"""
 +++
