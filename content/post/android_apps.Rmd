@@ -1,0 +1,171 @@
+---
+title: "Les applis Android payantes mieux notées que les autres ?"
+author: "Jordan"
+date: 2018-01-05T21:38:14-00:00
+output: html_document
+categories: ["R"]
+image: "/images/blog/Google_playstore.jpg"
+tags: ["R Markdown", "Dataviz", "Android"]
+df_print: tibble::print.tbl_df
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+***
+
+Les applications Android proposées sur le Google PlayStore peuvent avoir différents modèles économiques. Le but est d'observer si ce choix a un impact, sur l'expérience utilisateur notamment.
+
+***
+
+# Le choix du modèle économique des applications Android
+
+Un jeu de données sur les applications Android est disponible sur Kaggle. Extrait du Google PlayStore, il recense des informations sur près de 10 000 applications, avec leur thème, nombre de téléchargements, prix, notation...
+Le prix de vente apporte des informations sur le modèle économique retenu. Il y en a 4 majeurs :
+
+* téléchargement gratuit avec publicité intégrée
+* téléchargement gratuit avec achats optionnels ensuite (modèle freenium)
+* téléchargement payant et sans publicité
+* téléchargement gratuit et sans publicité : l'auteur ne cherche pas à rentabiliser son application
+
+Ce ne sont ici que les 4 grandes catégories, les créateurs sont libres de choisir leur modèle économique en mélangeant ces différents principes.
+
+L'idée ici est de voir si les applications non gratuites se différencient vraiment des autres.
+Les applications payantes à l'achat mettent généralement en avant l'absence de publicité et des services de qualité. Dès lors on peut s'attendre à ce qu'elles génèrent une satisfaction plus importante chez les consommateurs.
+C'est ce que nous allons essayer de vérifier.
+
+```{r prepa, echo=FALSE, message=FALSE, warning=FALSE}
+# Objectif : preparer le jeu de donnees
+
+options(scipen = 999999)
+
+#******************************************************
+# Packages ============================================
+#******************************************************
+library(dplyr) # manipulation de donnees
+library(ggplot2) # graphiques
+library(stringr) # manipulation de chaines de caracteres
+library(tidyr) # Pour passer en tidy data
+library(plotly) # graphiques interactifs
+
+#******************************************************
+# Donnees ============================================
+#******************************************************
+# Informations sur le nombre d'etablissements selon leur effectif, dans chaque commune
+base <- read.csv(file = "C:/Users/Jordan/Documents/R_posts/google-play-store-apps/data/googleplaystore.csv",encoding = "UTF-8",stringsAsFactors = FALSE)
+
+# Suppression des doublons
+base <- base %>% distinct()
+
+# Changement de type de variable
+base <- base %>% mutate(Category = as.factor(Category),
+                        Type = as.factor(Type),
+                        Content.Rating = as.factor(Content.Rating),
+                        Genres = as.factor(Genres),
+                        Reviews = as.numeric(Reviews))
+
+# Suppression lignes foireuses
+base <- base %>% filter(!(App %in% c("Life Made WI-Fi Touchscreen Photo Frame","Command & Conquer: Rivals")))
+
+# Passage de la variable Size en numerique
+base <- base %>% mutate(Size = case_when(Size == "Varies with device" ~ NA_real_,
+                                         str_detect(Size,'k') == TRUE ~ as.numeric(str_remove(base$Size,'k'))/1000,
+                                         str_detect(Size,'M') == TRUE ~ as.numeric(str_remove(Size,'M')),
+                                         TRUE ~ 1)
+)
+
+# Passage de la variable prix en numerique
+base <- base %>% mutate(Price = as.numeric(str_remove(Price,"\\$")))
+
+# Suppression des facteurs inutiles
+base <- base %>% mutate(Type=droplevels(base$Type))
+
+```
+
+### La proportion d'applications payantes diffère selon la catégorie.
+
+
+```{r prop_pay, echo=FALSE, fig.width=8, fig.height=9}
+temp <- base %>% group_by(Category) %>% summarize(Payant = round(sum(Type=="Paid")/n(),3))
+
+
+temp <- temp %>% arrange(Payant)
+temp$id=seq(1, nrow(temp))
+
+# Get the name and the y position of each label
+label_temp=temp
+number_of_bar=nrow(label_temp)
+angle= 90 - 360 * (label_temp$id-0.5) /number_of_bar     # I substract 0.5 because the letter must have the angle of the center of the bars. Not extreme right(1) or extreme left (0)
+label_temp$hjust<-ifelse( angle < -90, 1, 0)
+label_temp$angle<-ifelse(angle < -90, angle+180, angle)
+
+
+ggplot(temp,aes(x=reorder(Category,Payant,min),y=Payant,fill=Payant))+
+  geom_col()+
+  coord_polar()+
+  geom_text(data=label_temp, aes(x=id, y=Payant+ 0.01, label=paste0(Category,"  ", Payant*100,"%"), hjust=hjust),
+            color="black", size=2.5, angle=label_temp$angle, inherit.aes = FALSE )+
+  scale_fill_continuous(type= "viridis",expand=c(0,0), labels = scales::percent, name = "% payant")+
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    axis.text = element_blank(),
+    panel.background = element_blank(),
+    legend.direction = "vertical",
+    legend.position=c(0.8,0.85)
+  )+
+  ylim(-0.03,0.25) # Ajout du vide central pour améliorer la lisibilité
+
+rm(temp,label_temp,angle,number_of_bar)
+```
+Quelles explications apportées à ces différences ? Voici quelques unes de mes hypothèses :   
+Toutes les applications ne se prêtent pas à un modèle économique fondé sur les publicités, par exemple les applications de personnalisation. Une fois le nouveau thème de l'appareil installé, l'apparence du clavier renouvelée ou la police d'écriture modifiée, l'utilisateur ne revient pas dans l'application. Il ne va alors pas visionné d'annonces commerciales.
+Fixer un prix d'achat est aussi un signal envoyé au potentiel utilisateur, qui peut s'interpréter comme un gage de qualité : l'appplication est travaillée, pensée et désignée par des professionnels, avec un contenu de qualité. Tous ces intervenants doivent être rémunérés, donc le service est vendu à un prix donné. On peut imaginer que c'est une des raisons pour laquelle une application de médecine sur cinq est payante.  
+Le cas des applications de cette catégorie en particulier peut s'interpréter d'une autre manière : les gens sont plus facilement prêts à payer pour une application qui contribue de près ou de loin à leur état de santé, que pour un jeu.  
+
+
+### Les applications payantes généralement plus appréciées
+```{r comparatif, echo=FALSE,fig.width=8, fig.height=9}
+
+# Comparatif des notes moyennes selon le prix de l'app ---------------------------------------------------------------------
+# Moyenne note selon la categorie
+temp <- base %>%
+  group_by(Category,Type) %>%
+  summarise(note_moyenne=mean(Rating,na.rm = TRUE))
+
+# Coordonnees pour l'etiquette : entre les deux points
+temp_coord <- temp %>% ungroup() %>% 
+  group_by(Category) %>% 
+  summarise(coord = mean(note_moyenne,na.rm=TRUE))
+
+# Dataviz
+(plot1 <-
+  ggplot(temp %>% filter(!is.nan(Type) & !is.nan(note_moyenne)))+ # Exclusion des valeurs nulles
+  geom_path(aes(x=reorder(Category,note_moyenne,max),y=note_moyenne),size=1.25,color="grey70")+ # Tri selon la note maximale
+  geom_point(aes(x=reorder(Category,note_moyenne,max),y=note_moyenne,color=Type),size=2.5)+
+  geom_text(data=temp_coord,aes(x=Category,y=coord,label=Category),size=2.5,vjust=-1,fontface="bold")+
+  scale_x_discrete(expand=c(0.04,0))+
+  scale_y_continuous(name="Note moyenne", expand=c(0.02,0),limits = c(3.0,5.0))+
+  scale_color_manual(values=c("Free"="#4d7c8a","Paid"="#ffd23f"),
+                     labels = c("Gratuite","Payante"))+
+  labs(caption = "Source : https://www.kaggle.com/lava18/google-play-store-apps/home")+
+  coord_flip()+
+  theme(panel.background = element_rect(fill="grey98"),
+        plot.caption = element_text(face="italic"),
+        plot.title = element_text(size=11, face = "bold",hjust = 0.5),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(face="bold",color="grey50"),
+        axis.line.x = element_blank(),
+        panel.grid.major.x = element_line(color="grey80",linetype = 3),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "top",
+        legend.title = element_blank(),
+        legend.key = element_rect(fill="transparent"),
+        legend.margin=margin(t=-0.1, r=0, b=-0.3, l=0, unit="cm"))+
+  ggtitle("Les applications Android payantes globalement \nmieux notées que celles gratuites de la meme catégorie"))
+
+rm(plot1, temp, temp_coord)
+```
