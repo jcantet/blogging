@@ -1,0 +1,19 @@
+---
+title: "TidyTuesday 1 - Spotify's songs"
+author: "Jordan"
+date: 2020-01-20T21:13:14-05:00
+categories: ["R"]
+tags: ["R Markdown", "dataviz", "TidyTuesday"]
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Le #TidyTuesday sur Twitter regroupe des membres de la communauté R autour d'un jeu de données, différent chaque semaine, afin de produire une dataviz qui apporte un autre regard sur les donnéees.  
+Le thème du #TidyTuesday du 20 janvier 2020 m'a inspiré cette première contribution.
+
+# À la recherche d'un effet de mode lié à la date de sortie d'un morceau sur Spotify
+
+![Première contribution au TidyTuesday](C:/Users/Jordan/Documents/R_posts/TT_20200120 - Spotify/TT_20200220_graph1.png)
