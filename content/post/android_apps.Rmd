@@ -1,7 +1,7 @@
 ---
-title: "Les applis Android payantes mieux notées que les autres ?"
+title: "Les applis Android payantes mieux notÃ©es que les autres ?"
 author: "Jordan"
-date: 2018-01-05T21:38:14-00:00
+date: 2018-01-05
 output: html_document
 categories: ["R"]
 image: "/images/blog/Google_playstore.jpg"
@@ -15,25 +15,25 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ***
 
-Les applications Android proposées sur le Google PlayStore peuvent avoir différents modèles économiques. Le but est d'observer si ce choix a un impact, sur l'expérience utilisateur notamment.
+Les applications Android proposÃ©es sur le Google PlayStore peuvent avoir diffÃ©rents modÃ¨les Ã©conomiques. Le but est d'observer si ce choix a un impact, sur l'expÃ©rience utilisateur notamment.
 
 ***
 
-# Le choix du modèle économique des applications Android
+# Le choix du modÃ¨le Ã©conomique des applications Android
 
-Un jeu de données sur les applications Android est disponible sur Kaggle. Extrait du Google PlayStore, il recense des informations sur près de 10 000 applications, avec leur thème, nombre de téléchargements, prix, notation...
-Le prix de vente apporte des informations sur le modèle économique retenu. Il y en a 4 majeurs :
+Un jeu de donnÃ©es sur les applications Android est disponible sur Kaggle. Extrait du Google PlayStore, il recense des informations sur prÃ¨s de 10 000 applications, avec leur thÃ¨me, nombre de tÃ©lÃ©chargements, prix, notation...
+Le prix de vente apporte des informations sur le modÃ¨le Ã©conomique retenu. Il y en a 4 majeurs :
 
-* téléchargement gratuit avec publicité intégrée
-* téléchargement gratuit avec achats optionnels ensuite (modèle freenium)
-* téléchargement payant et sans publicité
-* téléchargement gratuit et sans publicité : l'auteur ne cherche pas à rentabiliser son application
+* tÃ©lÃ©chargement gratuit avec publicitÃ© intÃ©grÃ©e
+* tÃ©lÃ©chargement gratuit avec achats optionnels ensuite (modÃ¨le freenium)
+* tÃ©lÃ©chargement payant et sans publicitÃ©
+* tÃ©lÃ©chargement gratuit et sans publicitÃ© : l'auteur ne cherche pas Ã  rentabiliser son application
 
-Ce ne sont ici que les 4 grandes catégories, les créateurs sont libres de choisir leur modèle économique en mélangeant ces différents principes.
+Ce ne sont ici que les 4 grandes catÃ©gories, les crÃ©ateurs sont libres de choisir leur modÃ¨le Ã©conomique en mÃ©langeant ces diffÃ©rents principes.
 
-L'idée ici est de voir si les applications non gratuites se différencient vraiment des autres.
-Les applications payantes à l'achat mettent généralement en avant l'absence de publicité et des services de qualité. Dès lors on peut s'attendre à ce qu'elles génèrent une satisfaction plus importante chez les consommateurs.
-C'est ce que nous allons essayer de vérifier.
+L'idÃ©e ici est de voir si les applications non gratuites se diffÃ©rencient vraiment des autres.
+Les applications payantes Ã  l'achat mettent gÃ©nÃ©ralement en avant l'absence de publicitÃ© et des services de qualitÃ©. DÃ¨s lors on peut s'attendre Ã  ce qu'elles gÃ©nÃ¨rent une satisfaction plus importante chez les consommateurs.
+C'est ce que nous allons essayer de vÃ©rifier.
 
 ```{r prepa, echo=FALSE, message=FALSE, warning=FALSE}
 # Objectif : preparer le jeu de donnees
@@ -83,7 +83,7 @@ base <- base %>% mutate(Type=droplevels(base$Type))
 
 ```
 
-### La proportion d'applications payantes diffère selon la catégorie.
+### La proportion d'applications payantes diffÃ¨re selon la catÃ©gorie.
 
 
 ```{r prop_pay, echo=FALSE, fig.width=8, fig.height=9}
@@ -115,17 +115,18 @@ ggplot(temp,aes(x=reorder(Category,Payant,min),y=Payant,fill=Payant))+
     legend.direction = "vertical",
     legend.position=c(0.8,0.85)
   )+
-  ylim(-0.03,0.25) # Ajout du vide central pour améliorer la lisibilité
+  ylim(-0.03,0.25) # Ajout du vide central pour amÃ©liorer la lisibilitÃ©
 
 rm(temp,label_temp,angle,number_of_bar)
 ```
-Quelles explications apportées à ces différences ? Voici quelques unes de mes hypothèses :   
-Toutes les applications ne se prêtent pas à un modèle économique fondé sur les publicités, par exemple les applications de personnalisation. Une fois le nouveau thème de l'appareil installé, l'apparence du clavier renouvelée ou la police d'écriture modifiée, l'utilisateur ne revient pas dans l'application. Il ne va alors pas visionné d'annonces commerciales.
-Fixer un prix d'achat est aussi un signal envoyé au potentiel utilisateur, qui peut s'interpréter comme un gage de qualité : l'appplication est travaillée, pensée et désignée par des professionnels, avec un contenu de qualité. Tous ces intervenants doivent être rémunérés, donc le service est vendu à un prix donné. On peut imaginer que c'est une des raisons pour laquelle une application de médecine sur cinq est payante.  
-Le cas des applications de cette catégorie en particulier peut s'interpréter d'une autre manière : les gens sont plus facilement prêts à payer pour une application qui contribue de près ou de loin à leur état de santé, que pour un jeu.  
+  
+Quelles explications apportÃ©es Ã  ces diffÃ©rences ? Voici quelques unes de mes hypothÃ¨ses :   
+**Toutes les applications ne se prÃªtent pas Ã  un modÃ¨le Ã©conomique fondÃ© sur les publicitÃ©s** Ã  l'image exemple les applications de personnalisation : une fois le nouveau thÃ¨me de l'appareil installÃ©, l'apparence du clavier renouvelÃ©e ou la police d'Ã©criture modifiÃ©e, l'utilisateur n'a pas Ã  revenir dans l'application. Il ne va alors pas visionner d'annonces commerciales.
+Fixer un prix d'achat est aussi un signal envoyÃ© au potentiel utilisateur, qui peut s'interprÃ©ter comme un gage de qualitÃ© : l'appplication est travaillÃ©e, pensÃ©e et designÃ©e par des professionnels, avec un contenu de qualitÃ©. Tous ces intervenants doivent Ãªtre rÃ©munÃ©rÃ©s, donc le service est vendu Ã  un prix donnÃ©. On peut imaginer que c'est une des raisons pour laquelle une application de mÃ©decine sur cinq est payante.  
+Le cas des applications de cette catÃ©gorie en particulier peut s'interprÃ©ter d'une autre maniÃ¨re : les gens sont plus facilement prÃªts Ã  payer pour une application qui contribue de prÃ¨s ou de loin Ã  leur Ã©tat de santÃ©, que pour un jeu.  
 
 
-### Les applications payantes généralement plus appréciées
+### Les applications payantes gÃ©nÃ©ralement plus apprÃ©ciÃ©es
 ```{r comparatif, echo=FALSE,fig.width=8, fig.height=9}
 
 # Comparatif des notes moyennes selon le prix de l'app ---------------------------------------------------------------------
@@ -165,7 +166,7 @@ temp_coord <- temp %>% ungroup() %>%
         legend.title = element_blank(),
         legend.key = element_rect(fill="transparent"),
         legend.margin=margin(t=-0.1, r=0, b=-0.3, l=0, unit="cm"))+
-  ggtitle("Les applications Android payantes globalement \nmieux notées que celles gratuites de la meme catégorie"))
+  ggtitle("Les applications Android payantes globalement \nmieux notÃ©es que celles gratuites de la meme catÃ©gorie"))
 
 rm(plot1, temp, temp_coord)
 ```
